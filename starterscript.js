@@ -31,7 +31,14 @@ function addTile() {
 	//place a 2 on a random spot in the board	
 	var x = Math.round(Math.random()*3);
 	var y = Math.round(Math.random()*3);
+	if (grid[x][y] !== "2"){
 	grid[x][y] = "2";
+}
+	else{
+	addTile();
+}
+
+
 }
 	
 
@@ -66,20 +73,24 @@ document.onkeydown = function(e) {
     if (e.keyCode == UP_ARROW) {
         // up arrow
         moveTilesUp();
+        addTile();
         
     }
     //double equals sign will convert it for us 
     else if (e.keyCode == DOWN_ARROW) {
         // down arrow
-        console.log("Pressed down");
+        moveTilesDown();
+        addTile();
     }
     else if (e.keyCode == LEFT_ARROW) {
        // left arrow
-       console.log("Pressed left");
+       moveTilesLeft();
+       addTile();
     }
     else if (e.keyCode == RIGHT_ARROW) {
        // right arrow
-       console.log("Pressed right");
+       moveTilesRight();
+       addTile();
     } 
     
     printBoard(); //have to recall print board to get the board to update
@@ -88,12 +99,13 @@ document.onkeydown = function(e) {
 function moveTilesUp()
 {
     
-    for(var r=0; r < grid.length; r++)
+    for(var r = 0; r < grid.length; r++)
     {
-        for(var c=0; c<grid[r].length; c++)
+        for(var c = 0; c < grid[r].length; c++)
         {
             if(r !== 0  && grid[r][c] !== "x" && grid[r-1][c] === "x")
             {
+
                 grid[r-1][c] = grid[r][c];
                 grid[r][c] = "x";
             }
@@ -103,3 +115,70 @@ function moveTilesUp()
     }   
     
 }
+function moveTilesDown()
+{
+    
+    for(var r = grid.length-1; r >= 0; r--)
+    {
+        for(var c = 0; c < grid[r].length; c++)
+        {
+            if(r !== grid.length-1  && grid[r][c] !== "x" && grid[r+1][c] === "x")
+            {
+
+                grid[r+1][c] = grid[r][c];
+                grid[r][c] = "x";
+            }
+            
+        }
+        
+    }   
+    
+}
+
+function moveTilesLeft()
+{
+    
+    for(var r = 0; r < grid.length; r++)
+    {
+        for(var c = 0; c < grid[r].length; c++)
+        {
+            if(c !== 0  && grid[r][c] !== "x" && grid[r][c-1] === "x")
+            {
+
+                grid[r][c-1] = grid[r][c];
+                grid[r][c] = "x";
+            }
+            
+        }
+        
+    }   
+    
+}
+
+
+function moveTilesRight()
+{
+    
+    for(var r = 0; r < grid.length; r++)
+    {
+        for(var c = grid.length-1; c >= 0; c--)
+        {
+            if(c !== grid[r].length-1  && grid[r][c] !== "x" && grid[r][c+1] === "x")
+            {
+                grid[r][c+1] = grid[r][c];
+                grid[r][c] = "x";
+
+            }
+            
+        }
+        
+    }   
+    
+}
+
+
+
+
+
+
+
