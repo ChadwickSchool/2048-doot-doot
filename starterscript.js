@@ -3,7 +3,7 @@ var UP_ARROW = '38';
 var DOWN_ARROW = '40';
 var LEFT_ARROW = '37';
 var RIGHT_ARROW = '39';
-
+var x = "x";
 
 //As soon as webpage loads run these two functions
 $(document).ready(function(){
@@ -18,7 +18,7 @@ function setUpBoard(){
 	for(var i=0; i<4; i++){
 		var innergrid = [];
 		for(var j=0; j<4; j++){
-			innergrid.push("x");
+			innergrid.push(x);
 		}
 		grid.push(innergrid);
 	}
@@ -27,11 +27,15 @@ function setUpBoard(){
 	
 }
 
+function getX(){
+	return x.value();
+}
+
 function addTile() {
 	//place a 2 on a random spot in the board	
 	var x = Math.round(Math.random()*3);
 	var y = Math.round(Math.random()*3);
-	if (grid[x][y] !== "2"){
+	if (grid[x][y] % 2 != 0){
 	grid[x][y] = "2";
 }
 	else{
@@ -63,6 +67,8 @@ function printBoard(){
 //e is a special variable
 // that references the event obeject that reads if the user is interacting with 
 //the window 
+
+
 document.onkeydown = function(e) {
      
     //makes it work in internet explorer which uses window.event and not e 
@@ -72,7 +78,9 @@ document.onkeydown = function(e) {
     //to use triple equals sign 
     if (e.keyCode == UP_ARROW) {
         // up arrow
+
         moveTilesUp();
+        combineTilesUp();
         addTile();
         
     }
@@ -80,21 +88,103 @@ document.onkeydown = function(e) {
     else if (e.keyCode == DOWN_ARROW) {
         // down arrow
         moveTilesDown();
+        combineTilesDown();
         addTile();
     }
     else if (e.keyCode == LEFT_ARROW) {
        // left arrow
        moveTilesLeft();
+       combineTilesLeft();
        addTile();
     }
     else if (e.keyCode == RIGHT_ARROW) {
        // right arrow
        moveTilesRight();
+       combineTilesRight();
        addTile();
     } 
     
     printBoard(); //have to recall print board to get the board to update
 };
+
+function combineTilesUp(){
+	for(var r = 0; r < grid.length; r++)
+    {
+        for(var c = 0; c < grid[r].length; c++)
+        {
+            
+            if(r !== 0  && grid[r][c] !== x && grid[r-1][c] === grid[r][c])
+            {
+				grid[r-1][c] = grid[r][c]*2;
+                grid[r][c] = x;
+            }
+        }
+        
+       
+    
+	}
+}
+
+function combineTilesDown(){
+ for(var r = grid.length-1; r >= 0; r--)
+    {
+        for(var c = 0; c < grid[r].length; c++)
+        {
+            if(r !== grid.length-1  && grid[r][c] !== x && grid[r+1][c] === grid[r][c])
+            {
+
+                grid[r+1][c] = grid[r][c]*2;
+                grid[r][c] = x;
+            }
+            
+        }
+        
+    }   
+    
+}
+
+function combineTilesLeft()
+{
+    
+    for(var r = 0; r < grid.length; r++)
+    {
+        for(var c = 0; c < grid[r].length; c++)
+        {
+            if(c !== 0  && grid[r][c] !== x && grid[r][c-1] === grid[r][c])
+            {
+
+                grid[r][c-1] = grid[r][c]*2;
+                grid[r][c] = x;
+            }
+            
+        }
+        
+    }   
+    
+}
+
+function combineTilesRight()
+{
+    
+    for(var r = 0; r < grid.length; r++)
+    {
+        for(var c = grid.length-1; c >= 0; c--)
+        {
+            if(c !== grid[r].length-1  && grid[r][c] !== x && grid[r][c+1] === grid[r][c])
+            {
+                grid[r][c+1] = grid[r][c]*2;
+                grid[r][c] = x;
+
+            }
+            
+        }
+        
+    }   
+    
+}
+
+
+
 
 function moveTilesUp()
 {
@@ -103,11 +193,10 @@ function moveTilesUp()
     {
         for(var c = 0; c < grid[r].length; c++)
         {
-            if(r !== 0  && grid[r][c] !== "x" && grid[r-1][c] === "x")
+            if(r !== 0  && grid[r][c] !== x && grid[r-1][c] === x)
             {
-
-                grid[r-1][c] = grid[r][c];
-                grid[r][c] = "x";
+				grid[r-1][c] = grid[r][c];
+                grid[r][c] = x;
             }
             
         }
@@ -122,11 +211,11 @@ function moveTilesDown()
     {
         for(var c = 0; c < grid[r].length; c++)
         {
-            if(r !== grid.length-1  && grid[r][c] !== "x" && grid[r+1][c] === "x")
+            if(r !== grid.length-1  && grid[r][c] !== x && grid[r+1][c] === x)
             {
 
                 grid[r+1][c] = grid[r][c];
-                grid[r][c] = "x";
+                grid[r][c] = x;
             }
             
         }
@@ -142,11 +231,11 @@ function moveTilesLeft()
     {
         for(var c = 0; c < grid[r].length; c++)
         {
-            if(c !== 0  && grid[r][c] !== "x" && grid[r][c-1] === "x")
+            if(c !== 0  && grid[r][c] !== x && grid[r][c-1] === x)
             {
 
                 grid[r][c-1] = grid[r][c];
-                grid[r][c] = "x";
+                grid[r][c] = x;
             }
             
         }
@@ -163,10 +252,10 @@ function moveTilesRight()
     {
         for(var c = grid.length-1; c >= 0; c--)
         {
-            if(c !== grid[r].length-1  && grid[r][c] !== "x" && grid[r][c+1] === "x")
+            if(c !== grid[r].length-1  && grid[r][c] !== x && grid[r][c+1] === x)
             {
                 grid[r][c+1] = grid[r][c];
-                grid[r][c] = "x";
+                grid[r][c] = x;
 
             }
             
@@ -175,7 +264,6 @@ function moveTilesRight()
     }   
     
 }
-
 
 
 
