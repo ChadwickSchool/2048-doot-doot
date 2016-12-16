@@ -4,12 +4,14 @@ var DOWN_ARROW = '40';
 var LEFT_ARROW = '37';
 var RIGHT_ARROW = '39';
 var x = "x";
+var score = 0;
 
 //As soon as webpage loads run these two functions
 $(document).ready(function(){
 	setUpBoard();
 	printBoard();
 	console.log("Loaded webpage"); //how you do print statements in javascript
+	console.log(score);
 });
 
 function setUpBoard(){
@@ -27,16 +29,13 @@ function setUpBoard(){
 	
 }
 
-function getX(){
-	return x.value();
-}
 
 function addTile() {
 	//place a 2 on a random spot in the board	
-	var x = Math.round(Math.random()*3);
+	var xx = Math.round(Math.random()*3);
 	var y = Math.round(Math.random()*3);
-	if (grid[x][y] % 2 != 0){
-	grid[x][y] = "2";
+	if (grid[xx][y] % 2 != 0){
+	grid[xx][y] = "2";
 }
 	else{
 	addTile();
@@ -79,28 +78,28 @@ document.onkeydown = function(e) {
     if (e.keyCode == UP_ARROW) {
         // up arrow
 
-        moveTilesUp();
         combineTilesUp();
+        moveTilesUp();
         addTile();
         
     }
     //double equals sign will convert it for us 
     else if (e.keyCode == DOWN_ARROW) {
         // down arrow
-        moveTilesDown();
         combineTilesDown();
+        moveTilesDown();
         addTile();
     }
     else if (e.keyCode == LEFT_ARROW) {
        // left arrow
-       moveTilesLeft();
        combineTilesLeft();
+       moveTilesLeft();
        addTile();
     }
     else if (e.keyCode == RIGHT_ARROW) {
        // right arrow
-       moveTilesRight();
        combineTilesRight();
+       moveTilesRight();
        addTile();
     } 
     
@@ -117,6 +116,8 @@ function combineTilesUp(){
             {
 				grid[r-1][c] = grid[r][c]*2;
                 grid[r][c] = x;
+                score += 1;
+                console.log(score);
             }
         }
         
@@ -135,6 +136,8 @@ function combineTilesDown(){
 
                 grid[r+1][c] = grid[r][c]*2;
                 grid[r][c] = x;
+                score += 1;
+                console.log(score);
             }
             
         }
@@ -155,6 +158,8 @@ function combineTilesLeft()
 
                 grid[r][c-1] = grid[r][c]*2;
                 grid[r][c] = x;
+                score += 1;
+                console.log(score);
             }
             
         }
@@ -174,6 +179,8 @@ function combineTilesRight()
             {
                 grid[r][c+1] = grid[r][c]*2;
                 grid[r][c] = x;
+                score += 1;
+                console.log(score);
 
             }
             
