@@ -1,6 +1,6 @@
 
 //2D array initialized with sample values. To get a blank board initialize all the values to zero
-var board = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
+var board = [];
 var UP_ARROW = '38';
 var DOWN_ARROW = '40';
 var LEFT_ARROW = '37';
@@ -23,7 +23,7 @@ function setUpBoard(){
 	for(var i=0; i<4; i++){
 		var innergrid = [];
 		for(var j=0; j<4; j++){
-			innergrid.push(x);
+			innergrid.push(0);
 		}
 		board.push(innergrid);
 	}
@@ -37,14 +37,10 @@ function addTile() {
 	//place a 2 on a random spot in the board	
 	var xx = Math.round(Math.random()*3);
 	var y = Math.round(Math.random()*3);
-
-	board[xx][y] = 2;
-
-
-
-
-
-
+	while (board[xx][y] < 2 || board[xx][y] == null){
+		board[xx][y] = 2;
+	}
+	
 }
 	
 
@@ -54,6 +50,13 @@ function printBoard(){
 	for(var i=0; i<4; i++){
 		for(var j=0; j<4; j++){
 			var boardID = "r"+i+"c"+j;
+
+			if (board[i][j] != x){
+				document.getElementById(boardID).innerHTML = board[i][j];
+			}
+			else{
+				document.getElementById(boardID).innerHTML = "";
+			}
 
 			//if the tile is not zero, put it on the board 
 				document.getElementById(boardID).innerHTML = board[i][j];
@@ -93,6 +96,9 @@ function printBoard(){
 					document.getElementById(boardID).style.background = "#ccc0b3";
 					break;
 				default:
+
+					document.getElementById(boardID).style.background = "rgba(238, 228, 218, 0.35)";
+					break;
 					//similar to the else statement. If none of the other cases execute, this statement will execute
 			}
 		}
@@ -104,6 +110,7 @@ function printBoard(){
 document.onkeydown = function(e){
 
 	 e = e || window.event;
+	    
 	    if (e.keyCode == UP_ARROW) {
         // up arrow
 
@@ -141,11 +148,11 @@ function combineTilesUp(){
         for(var c = 0; c < board[r].length; c++)
         {
             
-            if(r !== 0  && board[r][c] !== x && board[r-1][c] === board[r][c])
+            if(r !== 0  && board[r][c] !== 0 && board[r-1][c] === board[r][c])
             {
 				
 				board[r][c] = board[r][c]*2;
-                board[r-1][c] = x;
+                board[r-1][c] = 0;
                 score += 1;
                 console.log(score);
             }
@@ -162,11 +169,11 @@ function combineTilesDown(){
     {
         for(var c = 0; c < board[r].length; c++)
         {
-            if(r !== board.length-1  && board[r][c] !== x && board[r+1][c] === board[r][c])
+            if(r !== board.length-1  && board[r][c] !== 0 && board[r+1][c] === board[r][c])
             {
             
                 board[r][c] = board[r][c]*2;
-                board[r+1][c] = x;
+                board[r+1][c] = 0;
                 score += 1;
                 console.log(score);
 
@@ -186,11 +193,11 @@ function combineTilesLeft()
     {
         for(var c = 0; c < board[r].length; c++)
         {
-            if(c !== 0  && board[r][c] !== x && board[r][c-1] === board[r][c])
+            if(c !== 0  && board[r][c] !== 0 && board[r][c-1] === board[r][c])
             {
        
                 board[r][c] = board[r][c]*2;
-                board[r][c-1] = x;
+                board[r][c-1] = 0;
                 score += 1;
                 console.log(score);
 
@@ -209,10 +216,10 @@ function combineTilesRight()
     {
         for(var c = board.length-1; c >= 0; c--)
         {
-            if(c !== board[r].length-1  && board[r][c] !== x && board[r][c+1] === board[r][c])
+            if(c !== board[r].length-1  && board[r][c] !== 0 && board[r][c+1] === board[r][c])
             {
                 board[r][c] = board[r][c]*2;
-                board[r][c+1] = x;
+                board[r][c+1] = 0;
                 score += 1;
                 console.log(score);
 
@@ -236,10 +243,10 @@ function moveTilesUp()
     {
         for(var c = 0; c < board[r].length; c++)
         {
-            if(r !== 0  && board[r][c] !== x && board[r-1][c] === x)
+            if(r !== 0  && board[r][c] !== 0 && board[r-1][c] === 0)
             {
 				board[r-1][c] = board[r][c];
-                board[r][c] = x;
+                board[r][c] = 0;
             }
             
         }
@@ -254,11 +261,11 @@ function moveTilesDown()
     {
         for(var c = 0; c < board[r].length; c++)
         {
-            if(r !== board.length-1  && board[r][c] !== x && board[r+1][c] === x)
+            if(r !== board.length-1  && board[r][c] !== 0 && board[r+1][c] === 0)
             {
 
                 board[r+1][c] = board[r][c];
-                board[r][c] = x;
+                board[r][c] = 0;
             }
             
         }
@@ -274,11 +281,11 @@ function moveTilesLeft()
     {
         for(var c = 0; c < board[r].length; c++)
         {
-            if(c !== 0  && board[r][c] !== x && board[r][c-1] === x)
+            if(c !== 0  && board[r][c] !== 0 && board[r][c-1] === 0)
             {
 
                 board[r][c-1] = board[r][c];
-                board[r][c] = x;
+                board[r][c] = 0;
             }
             
         }
@@ -295,10 +302,10 @@ function moveTilesRight()
     {
         for(var c = board.length-1; c >= 0; c--)
         {
-            if(c !== board[r].length-1  && board[r][c] !== x && board[r][c+1] === x)
+            if(c !== board[r].length-1  && board[r][c] !== 0 && board[r][c+1] === 0)
             {
                 board[r][c+1] = board[r][c];
-                board[r][c] = x;
+                board[r][c] = 0;
 
             }
             
